@@ -3,6 +3,7 @@ module Web.Slack.Conversations.API
     , OptionalParams
     , buildGetApi
     , NextCursor
+    , InfoParams
     , info
     , Conversations
     , ListParams
@@ -41,11 +42,16 @@ type NextCursor = '[ "next_cursor" >: Text ]
 
 -- | API for conversations
 
+type InfoParams = OptionalParams
+  '[ "include_locale"      >: Bool
+   , "include_num_members" >: Bool
+   ]
+
 info
   :: (MonadHttp m, Client c)
   => c
   -> ChannelID
-  -> ListParams
+  -> InfoParams
   -> m (SlackApiResponse (Record '[ "channel" >: Conversation ]))
 info client cid =
   buildGetApi "info" client . ("channel" =: cid <>) . buildRequestParams

@@ -55,6 +55,7 @@ type Conversation = Record
    , "user"                  >: Maybe UserID
    , "is_user_deleted"       >: Maybe Bool
    , "priority"              >: Maybe Int
+   , "locale"                >: Maybe Text
    ]
 
 type ChannelTopic = Record
