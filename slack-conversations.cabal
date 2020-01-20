@@ -1,0 +1,47 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 1bb1c2dcff1410570a63a77d04acd49a122f3867b776162abab5e30623b78cbc
+
+name:           slack-conversations
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/matsubara0507/slack-conversations#readme>
+category:       Web
+homepage:       https://github.com/matsubara0507/slack-conversations#readme
+author:         MATSUBARA Nobutada
+maintainer:     t12307043@gunma-u.ac.jp
+copyright:      MATSUBARA Nobutada
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+library
+  exposed-modules:
+      Web.Slack.Conversations
+      Web.Slack.Conversations.API
+      Web.Slack.Conversations.API.Internal
+      Web.Slack.Conversations.Client
+      Web.Slack.Conversations.Type
+  other-modules:
+      Paths_slack_conversations
+  hs-source-dirs:
+      src
+  default-extensions: ConstraintKinds DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving OverloadedStrings OverloadedLabels PolyKinds RankNTypes StandaloneDeriving TypeApplications TypeFamilies TypeOperators TypeSynonymInstances
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , extensible >=0.4.9
+    , http-api-data
+    , microlens
+    , req
+    , text
+    , unordered-containers
+  default-language: Haskell2010

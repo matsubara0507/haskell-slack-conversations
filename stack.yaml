@@ -1,0 +1,8 @@
+resolver: lts-14.20
+packages:
+- .
+extra-deps:
+- membership-0
+- req-3.0.0
+- github: matsubara0507/extensible
+  commit: dd0c51f280f5f3158ec2f6af23cb1684a4758e93
