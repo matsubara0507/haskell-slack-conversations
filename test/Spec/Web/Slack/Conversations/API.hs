@@ -12,6 +12,9 @@ import           Web.Slack.Conversations.Test.Helper (shouldResponseAs)
 
 specWith :: Client c => c -> IO TestTree
 specWith client = testSpec "Web.Slack.Conversations" $ do
+  describe "create" $
+    it "should return conversation" $
+      Conversations.create client "test" vacancy `shouldResponseAs` "test/fixture/conversation.json"
   describe "info" $
     it "should return conversation" $
       Conversations.info client "C012AB3CD" vacancy `shouldResponseAs` "test/fixture/conversation.json"

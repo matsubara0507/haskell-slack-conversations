@@ -16,16 +16,19 @@ import qualified Web.Slack.Conversations  as Slack
 
 type RakutenHeader a = a
 
-type API = "conversations.info" :> Get '[JSON] (Slack.Ok (Record '[ "channel" >: Slack.Conversation ]))
-      :<|> "conversations.list" :> Get '[JSON] (Slack.Ok Slack.Conversations)
+type API = "conversations.create" :> Post '[JSON] (Slack.Ok (Record '[ "channel" >: Slack.Conversation ]))
+      :<|> "conversations.info"   :> Get '[JSON] (Slack.Ok (Record '[ "channel" >: Slack.Conversation ]))
+      :<|> "conversations.list"   :> Get '[JSON] (Slack.Ok Slack.Conversations)
 
 api :: Proxy API
 api = Proxy
 
 server :: Server API
-server = conversationsInfo
+server = conversationsCreate
+    :<|> conversationsInfo
     :<|> conversationsList
   where
+    conversationsCreate = returnJsonFile "test/fixture/conversation.json"
     conversationsInfo = returnJsonFile "test/fixture/conversation.json"
     conversationsList = returnJsonFile "test/fixture/conversations.json"
 

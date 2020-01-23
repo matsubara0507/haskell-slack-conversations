@@ -2,12 +2,16 @@ module Web.Slack.Conversations.API
     ( SlackApiResponse
     , OptionalParams
     , buildGetApi
+    , buildPostApi
     , NextCursor
+    , CreateParams
+    , create
     , InfoParams
     , info
     , Conversations
     , ListParams
     , list
+    , create'
     , Channels
     , list'
     ) where
@@ -37,10 +41,33 @@ buildGetApi ::
 buildGetApi path c params =
   req GET (buildUrl c path) NoReqBody jsonResponse (mkHeader c <> params)
 
+buildPostApi ::
+  (MonadHttp m, Client c, FromJSON r)
+  => Text                          -- ^ request path
+  -> c                             -- ^ client
+  -> Option (ClientScheme c)       -- ^ request params
+  -> m (SlackApiResponse r)
+buildPostApi path c params =
+  req POST (buildUrl c path) NoReqBody jsonResponse (mkHeader c <> params)
+
 type NextCursor = '[ "next_cursor" >: Text ]
 
 
 -- | API for conversations
+
+type CreateParams = OptionalParams
+  '[ "is_private" >: Bool
+   , "user_ids"   >: [UserID]
+   ]
+
+create
+  :: (MonadHttp m, Client c)
+  => c
+  -> Text -- ^ channel name
+  -> CreateParams
+  -> m (SlackApiResponse (Record '[ "channel" >: Conversation ]))
+create client cname =
+  buildPostApi "create" client . ("name" =: cname <>) . buildRequestParams
 
 type InfoParams = OptionalParams
   '[ "include_locale"      >: Bool
@@ -74,6 +101,15 @@ list client = buildGetApi "list" client . buildRequestParams
 
 
 -- | API for only public and private channels
+
+create'
+  :: (MonadHttp m, Client c)
+  => c
+  -> Text -- ^ channel name
+  -> CreateParams
+  -> m (SlackApiResponse (Record '[ "channel" >: Channel ]))
+create' client cname =
+  buildPostApi "create" client . ("name" =: cname <>) . buildRequestParams
 
 type Channels = Record
   '[ "channels"          >: [Slack.Channel]
