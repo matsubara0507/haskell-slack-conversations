@@ -24,7 +24,7 @@ jobs:
       uses: actions/cache@v1.1.0
       with:
         path: ~/.cabal
-        key: ${{ matrix.ghc }}-cabal-${{ hashFiles('**/fallible.cabal') }}
+        key: ${{ matrix.ghc }}-cabal-${{ hashFiles('**/slack-conversations.cabal') }}
         restore-keys: |
           ${{ matrix.ghc }}-cabal-
     - uses: actions/setup-haskell@v1
