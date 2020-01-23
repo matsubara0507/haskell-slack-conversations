@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5d16911aede821a49cffd88d2e8d733d48f77293da31c528ab6bd436dc10aebf
+-- hash: 27f9db1098f8aefce50e74898ddb7eee375e4d9560d72ef0ebf0b1da50d911b5
 
 name:           slack-conversations
 version:        0.1.0.0
@@ -38,10 +38,10 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
-    , extensible >=0.4.9
+    , extensible >=0.6.0
     , http-api-data
     , microlens
-    , req
+    , req >=2.0.0
     , text
     , unordered-containers
   default-language: Haskell2010
@@ -63,10 +63,10 @@ test-suite spec
       aeson
     , base >=4.7 && <5
     , bytestring
-    , extensible >=0.4.9
+    , extensible >=0.6.0
     , http-api-data
     , microlens
-    , req
+    , req >=2.0.0
     , servant-server
     , slack-conversations
     , tasty

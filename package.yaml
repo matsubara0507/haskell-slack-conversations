@@ -40,9 +40,9 @@ dependencies:
 - base >= 4.7 && < 5
 - aeson
 - bytestring
-- extensible >= 0.4.9
+- extensible >= 0.6.0
 - http-api-data
-- req
+- req >= 2.0.0
 - text
 - unordered-containers
 - microlens
