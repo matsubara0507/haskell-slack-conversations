@@ -5,4 +5,4 @@ extra-deps:
 - membership-0
 - req-3.0.0
 - github: matsubara0507/extensible
-  commit: dd0c51f280f5f3158ec2f6af23cb1684a4758e93
+  commit: d197daaef0ae18b9734384b8f0efa5783bc629e9

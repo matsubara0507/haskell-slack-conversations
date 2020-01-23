@@ -8,7 +8,8 @@ module Web.Slack.Conversations.Type
     , ChannelType (..)
     ) where
 
-import           Data.Aeson                           (FromJSON (..), (.:))
+import           Data.Aeson                           (FromJSON (..),
+                                                       ToJSON (..), (.:))
 import qualified Data.Aeson                           as J
 import           Data.Extensible
 import qualified Data.HashMap.Strict                  as HM
@@ -17,13 +18,19 @@ import           Data.Text                            (Text)
 import           Web.Slack.Conversations.API.Internal (ToHttpApiData' (..))
 
 data Ok a = Ok a | Err Text
-  deriving Show
+  deriving (Show, Eq)
 
 instance FromJSON a => FromJSON (Ok a) where
   parseJSON = J.withObject "Result e a" $ \obj -> case HM.lookup "ok" obj of
     Just (J.Bool True)  -> Ok <$> parseJSON (J.Object obj)
     Just (J.Bool False) -> Err <$> obj .: "error"
     _                   -> fail "key `ok:bool` is not found."
+
+instance ToJSON a => ToJSON (Ok a) where
+  toJSON (Ok a) = case toJSON a of
+    J.Object obj -> J.Object $ HM.insert "ok" (J.Bool True) obj
+    value        -> J.Object $ HM.fromList [("ok", J.Bool True), ("value", value)]
+  toJSON (Err e)  = J.Object $ HM.fromList [("ok", J.Bool False), ("error", J.String e)]
 
 type ChannelID = Text
 type UserID = Text
@@ -36,7 +43,7 @@ type Conversation = Record
    , "is_im"                 >: Bool
    , "created"               >: Int64
    , "creator"               >: Maybe UserID
-   , "is_archived"           >: Bool
+   , "is_archived"           >: Maybe Bool
    , "is_general"            >: Maybe Bool
    , "unlinked"              >: Maybe Int
    , "name_normalized"       >: Maybe Text

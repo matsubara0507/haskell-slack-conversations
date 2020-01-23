@@ -19,19 +19,19 @@ packages:
   original:
     hackage: req-3.0.0
 - completed:
-    size: 374792
-    url: https://github.com/matsubara0507/extensible/archive/dd0c51f280f5f3158ec2f6af23cb1684a4758e93.tar.gz
+    size: 374803
+    url: https://github.com/matsubara0507/extensible/archive/d197daaef0ae18b9734384b8f0efa5783bc629e9.tar.gz
     cabal-file:
       size: 2859
       sha256: 12dfa21548aba9f3b02a2f708a935240bae43383945f41e4e9054f37e421035b
     name: extensible
     version: '0.7'
-    sha256: a1560e0485c953ffd1187b72a28ba6ed451b581480070b13cc551cd7c48367ce
+    sha256: b4536cc73ababc3f3f1dbd0876f54c605919c8ebe8966c2f13bb1b4bd0aede7f
     pantry-tree:
       size: 2893
       sha256: 804be17ffd998a42234b605565831f4d569adfce755b6b9afcaf88ede5f8f079
   original:
-    url: https://github.com/matsubara0507/extensible/archive/dd0c51f280f5f3158ec2f6af23cb1684a4758e93.tar.gz
+    url: https://github.com/matsubara0507/extensible/archive/d197daaef0ae18b9734384b8f0efa5783bc629e9.tar.gz
 snapshots:
 - completed:
     size: 524154
