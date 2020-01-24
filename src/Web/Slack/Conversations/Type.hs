@@ -2,10 +2,13 @@ module Web.Slack.Conversations.Type
     ( Ok (..)
     , ChannelID
     , UserID
+    , TimeStamp
     , Conversation
     , Channel
     , ChannelTopic
     , ChannelType (..)
+    , Message
+    , Reply
     ) where
 
 import           Data.Aeson                           (FromJSON (..),
@@ -34,6 +37,8 @@ instance ToJSON a => ToJSON (Ok a) where
 
 type ChannelID = Text
 type UserID = Text
+
+type TimeStamp = Text
 
 type Conversation = Record
   '[ "id"                    >: ChannelID
@@ -104,4 +109,23 @@ type Channel = Record
    , "purpose"               >: ChannelTopic
    , "previous_names"        >: Maybe [Text]
    , "num_members"           >: Maybe Int
+   ]
+
+type Message = Record
+  '[ "type"           >: Text
+   , "user"           >: UserID
+   , "text"           >: Text
+   , "thread_ts"      >: Maybe TimeStamp
+   , "parent_user_id" >: Maybe UserID
+   , "reply_count"    >: Maybe Int
+   , "replies"        >: Maybe [Reply]
+   , "subscribed"     >: Maybe Bool
+   , "last_read"      >: Maybe TimeStamp
+   , "unread_count"   >: Maybe Int
+   , "ts"             >: TimeStamp
+   ]
+
+type Reply = Record
+  '[ "user" >: UserID
+   , "ts"   >: TimeStamp
    ]
