@@ -4,9 +4,12 @@ module Web.Slack.Conversations.Type
     , UserID
     , TimeStamp
     , Conversation
-    , Channel
     , ChannelTopic
     , ChannelType (..)
+    , Channel
+    , toChannel
+    , DirectMessage
+    , toDirectMessage
     , Message
     , Reply
     ) where
@@ -18,6 +21,7 @@ import           Data.Extensible
 import qualified Data.HashMap.Strict                  as HM
 import           Data.Int                             (Int64)
 import           Data.Text                            (Text)
+import           Lens.Micro                           ((^.))
 import           Web.Slack.Conversations.API.Internal (ToHttpApiData' (..))
 
 data Ok a = Ok a | Err Text
@@ -45,8 +49,8 @@ type Conversation = Record
    , "name"                  >: Maybe Text
    , "is_channel"            >: Maybe Bool
    , "is_group"              >: Maybe Bool
-   , "is_im"                 >: Bool
-   , "created"               >: Int64
+   , "is_im"                 >: Maybe Bool
+   , "created"               >: Maybe Int64
    , "creator"               >: Maybe UserID
    , "is_archived"           >: Maybe Bool
    , "is_general"            >: Maybe Bool
@@ -54,7 +58,7 @@ type Conversation = Record
    , "name_normalized"       >: Maybe Text
    , "is_shared"             >: Maybe Bool
    , "is_ext_shared"         >: Maybe Bool
-   , "is_org_shared"         >: Bool
+   , "is_org_shared"         >: Maybe Bool
    , "pending_shared"        >: Maybe [Text]
    , "is_pending_ext_shared" >: Maybe Bool
    , "is_member"             >: Maybe Bool
@@ -110,6 +114,50 @@ type Channel = Record
    , "previous_names"        >: Maybe [Text]
    , "num_members"           >: Maybe Int
    ]
+
+toChannel :: Conversation -> Maybe Channel
+toChannel conv = hsequence
+    $ #id                    <@=> Just (conv ^. #id)
+   <: #name                  <@=> conv ^. #name
+   <: #created               <@=> conv ^. #created
+   <: #creator               <@=> conv ^. #creator
+   <: #is_archived           <@=> conv ^. #is_archived
+   <: #is_general            <@=> conv ^. #is_general
+   <: #unlinked              <@=> conv ^. #unlinked
+   <: #name_normalized       <@=> conv ^. #name_normalized
+   <: #is_shared             <@=> conv ^. #is_shared
+   <: #is_ext_shared         <@=> conv ^. #is_ext_shared
+   <: #is_org_shared         <@=> conv ^. #is_org_shared
+   <: #pending_shared        <@=> conv ^. #pending_shared
+   <: #is_pending_ext_shared <@=> conv ^. #is_pending_ext_shared
+   <: #is_member             <@=> conv ^. #is_member
+   <: #is_private            <@=> conv ^. #is_private
+   <: #topic                 <@=> conv ^. #topic
+   <: #purpose               <@=> conv ^. #purpose
+   <: #previous_names        <@=> Just (conv ^. #previous_names)
+   <: #num_members           <@=> Just (conv ^. #num_members)
+   <: nil
+
+type DirectMessage = Record
+  '[ "id"              >: ChannelID
+   , "created"         >: Int64
+   , "is_im"           >: Bool
+   , "is_org_shared"   >: Bool
+   , "user"            >: UserID
+   , "is_user_deleted" >: Maybe Bool
+   , "priority"        >: Int
+   ]
+
+toDirectMessage :: Conversation -> Maybe DirectMessage
+toDirectMessage conv = hsequence
+    $ #id              <@=> Just (conv ^. #id)
+   <: #created         <@=> conv ^. #created
+   <: #is_im           <@=> conv ^. #is_im
+   <: #is_org_shared   <@=> conv ^. #is_org_shared
+   <: #user            <@=> conv ^. #user
+   <: #is_user_deleted <@=> Just (conv ^. #is_user_deleted)
+   <: #priority        <@=> conv ^. #priority
+   <: nil
 
 type Message = Record
   '[ "type"           >: Text

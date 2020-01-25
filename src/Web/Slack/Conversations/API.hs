@@ -34,16 +34,11 @@ module Web.Slack.Conversations.API
     , setPurpose
     , setTopic
     , unarchive
-    , create'
-    , Channels
-    , list'
     ) where
 
 import           Data.Aeson                           (FromJSON)
 import           Data.Extensible
-import           Data.Function                        ((&))
 import           Data.Text                            (Text)
-import           Lens.Micro                           ((.~))
 import           Network.HTTP.Req
 import           Web.Slack.Conversations.API.Internal (OptionalParams,
                                                        buildRequestParams,
@@ -222,11 +217,11 @@ members client cid =
 type OpenResult = Record
   '[ "no_op"        >: Maybe Bool
    , "already_open" >: Maybe Bool
-   , "channel"      >: Slack.Channel
+   , "channel"      >: Slack.Conversation
    ]
 
 type OpenParams = OptionalParams
-  '[ "channel"    >: Text
+  '[ "channel"   >: Text
    , "return_im" >: Bool
    , "users"     >: [Slack.UserID]
    ]
@@ -290,38 +285,3 @@ unarchive
   -> Slack.ChannelID
   -> m (SlackApiResponse (Record '[ "ok" >: Bool ]))
 unarchive client cid = buildPostApi "unarchive" client ("channel" =: cid)
-
--- | API for only public and private channels
-
-create'
-  :: (MonadHttp m, Client c)
-  => c
-  -> Text -- ^ channel name
-  -> CreateParams
-  -> m (SlackApiResponse (Record '[ "channel" >: Slack.Channel ]))
-create' client cname =
-  buildPostApi "create" client . ("name" =: cname <>) . buildRequestParams
-
-type Channels = Record
-  '[ "channels"          >: [Slack.Channel]
-   , "response_metadata" >: Record NextCursor
-   ]
-
-list'
-  :: (MonadHttp m, Client c)
-  => c -> ListParams -> m (SlackApiResponse Channels)
-list' client = buildGetApi "list" client . buildRequestParams . onlyChannel
-
-onlyChannel
-  :: Lookup xs "types" [Slack.ChannelType]
-  => OptionalParams xs -> OptionalParams xs
-onlyChannel params =
-  hmap liftNullable (hmap unliftNullable params & #types .~ wrap val)
-  where
-    val = Just [Slack.PublicChannel, Slack.PrivateChannel]
-
-liftNullable :: Wrapper h => Field (Nullable h) x -> Nullable (Field h) x
-liftNullable = wrap . unwrap
-
-unliftNullable :: Wrapper h => Nullable (Field h) x -> Field (Nullable h) x
-unliftNullable = wrap . unwrap
