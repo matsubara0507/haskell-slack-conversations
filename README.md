@@ -9,7 +9,7 @@
 gchi> import Lens.Micro
 gchi> import Data.Extensible
 ghci> import Web.Slack.Conversations as Conversations
-ghci> client = SlackApiClient "XXX" -- Slack API Token
+ghci> client = newClient "XXX" -- Slack API Token
 ghci> Right ch <- run $ Conversations.info client "YYY" vacancy
 ghci> ch ^. #channel ^. #name
 Just "general"

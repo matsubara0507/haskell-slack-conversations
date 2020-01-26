@@ -1,6 +1,7 @@
 module Web.Slack.Conversations.Client
     ( Client (..)
-    , SlackApiClient (..)
+    , SlackApiClient
+    , newClient
     ) where
 
 import           Data.ByteString  (ByteString)
@@ -20,3 +21,6 @@ instance Client SlackApiClient where
   type ClientScheme SlackApiClient = 'Https
   baseUrl = const (Req.https "slack.com" /: "api")
   mkHeader (SlackApiClient token) = Req.oAuth2Bearer token
+
+newClient :: Token -> SlackApiClient
+newClient = SlackApiClient
