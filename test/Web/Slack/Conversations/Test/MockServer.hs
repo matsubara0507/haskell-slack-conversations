@@ -15,8 +15,6 @@ import           Network.Wai.Handler.Warp
 import           Servant
 import qualified Web.Slack.Conversations  as Slack
 
-type RakutenHeader a = a
-
 type API = "conversations.archive"    :> Post '[JSON] (Slack.Ok (Record '[ "ok" >: Bool ]))
       :<|> "conversations.close"      :> Post '[JSON] (Slack.Ok Slack.CloseResule)
       :<|> "conversations.create"     :> Post '[JSON] (Slack.Ok (Record '[ "channel" >: Slack.Conversation ]))
