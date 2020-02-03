@@ -6,3 +6,5 @@ extra-deps:
 - req-3.0.0
 - github: fumieval/extensible
   commit: d197daaef0ae18b9734384b8f0efa5783bc629e9
+- servant-server-0.17
+- servant-0.17

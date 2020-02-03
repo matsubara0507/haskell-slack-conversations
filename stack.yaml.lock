@@ -32,6 +32,20 @@ packages:
       sha256: 804be17ffd998a42234b605565831f4d569adfce755b6b9afcaf88ede5f8f079
   original:
     url: https://github.com/fumieval/extensible/archive/d197daaef0ae18b9734384b8f0efa5783bc629e9.tar.gz
+- completed:
+    hackage: servant-server-0.17@sha256:1a5adf564f0b703535eb733f249b282ef2ca7b587a303c357b549fb88e7a6dcd,5388
+    pantry-tree:
+      size: 2460
+      sha256: ea65ba54acb4362efedbfa7db616a51023579a6c83f18ab6d2ea6a84dea56021
+  original:
+    hackage: servant-server-0.17
+- completed:
+    hackage: servant-0.17@sha256:e78734cb6b75c5d1e52e8f5e16bc3f557154a580bbde4932a7e1a6a90da7eb04,5029
+    pantry-tree:
+      size: 2392
+      sha256: 36561a606c35393386aa48b7cc2407fa4013aba62a19d69f004ec9c2010209aa
+  original:
+    hackage: servant-0.17
 snapshots:
 - completed:
     size: 524154
